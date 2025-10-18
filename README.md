@@ -1,2 +1,4 @@
-# rag-llm-edu
-Retrieval-Augmented Large Language Models for Learning
+# LLM para identificação de componentes com RAG
+
+
+

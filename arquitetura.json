@@ -1,0 +1,67 @@
+{
+    "components":[
+        {"name":"Xeon", "components":[
+                {"name":"QPI CTRL", "components":[]},
+                {"name":"PCIe 0 CTRL", "components":[]},
+                {"name":"PCIe 1 CTRL", "components":[]},
+                {"name":"LLC", "components":[]},
+                {"name":"CNN Code", "components":[
+                    {"name":"CNN CTRL Block", "components":[]},
+                    {"name":"ReLU", "components":[]},
+                    {"name":"Pooling", "components":[]},
+                    {"name":"Fully Connected", "components":[]},
+                    {"name":"Softmax", "components":[]}
+                ]} 
+        ]},
+        {"name":"FPGA Arria 10", "components":[
+            {"name":"FIU", "components":[
+                {"name":"QPI CTRL", "components":[]},
+                {"name":"PCIe 0 CTRL", "components":[]},
+                {"name":"PCIe 1 CTRL", "components":[]},
+                {"name":"Cache", "capacity":"64 kb"}
+            ]
+            },
+            {"name":"CCI-P", "components":[]},
+            {"name":"AFU", "components":[
+                {"name":"Convolution Block", "components":[]}
+            ]}
+        ]},
+        {"name":"DRAM", "capacity":"64 GB"}
+    ],
+    "connections":[
+        {"from": "Xeon", "to": "DRAM", "description": ""},
+        {"to": "Xeon", "from": "DRAM", "description": ""},
+        {"from": "Xeon.QPI CTRL", "to": "FPGA Arria 10.FIU.QPI CTRL", "description": "QPI (12,8 GB/s)"},
+        {"from": "Xeon.PCIe 0 CTRL", "to": "FPGA Arria 10.FIU.PCIe 0 CTRL", "description": "PCIe 0 (16 GB/s)"},
+        {"from": "Xeon.PCIe 1 CTRL", "to": "FPGA Arria 10.FIU.PCIe 1 CTRL", "description": "PCIe 1 (16 GB/s)"},
+        {"from": "FPGA Arria 10.FIU.QPI CTRL", "to": "Xeon.QPI CTRL", "description": "QPI (12,8 GB/s)"},
+        {"from": "FPGA Arria 10.FIU.PCIe 0 CTRL", "to": "Xeon.PCIe 0 CTRL", "description": "PCIe 0 (16 GB/s)"},
+        {"from": "FPGA Arria 10.FIU.PCIe 1 CTRL", "to": "Xeon.PCIe 1 CTRL", "description": "PCIe 1 (16 GB/s)"},
+        {"from": "Xeon.LLC", "to": "Xeon.QPI CTRL", "description": ""},
+        {"to": "Xeon.LLC", "from": "Xeon.QPI CTRL", "description": ""},
+        {"from": "Xeon.LLC", "to": "Xeon.PCIe 0 CTRL", "description": ""},
+        {"from": "Xeon.LLC", "to": "Xeon.PCIe 1 CTRL", "description": ""},
+        {"to": "Xeon.LLC", "from": "Xeon.PCIe 0 CTRL", "description": ""},
+        {"to": "Xeon.LLC", "from": "Xeon.PCIe 1 CTRL", "description": ""},
+        {"from": "Xeon.PCIe 0 CTRL", "to": "Xeon.PCIe 1 CTRL", "description": ""},
+        {"to": "Xeon.PCIe 0 CTRL", "from": "Xeon.PCIe 1 CTRL", "description": ""},
+        {"to": "Xeon.LLC", "from": "Xeon.CNN Code", "description": ""},
+        {"from": "Xeon.LLC", "to": "Xeon.CNN Code", "description": ""},
+        {"from": "FPGA Arria 10.FIU.QPI CTRL", "to": "FPGA Arria 10.FIU.Cache", "description": ""},
+        {"to": "FPGA Arria 10.FIU.QPI CTRL", "from": "FPGA Arria 10.FIU.Cache", "description": ""},
+        {"from": "FPGA Arria 10.CCI-P", "to": "FPGA Arria 10.FIU.Cache", "description": ""},
+        {"to": "FPGA Arria 10.CCI-P", "from": "FPGA Arria 10.FIU.Cache", "description": ""},
+        {"from": "FPGA Arria 10.FIU.PCIe 0 CTRL", "to": "FPGA Arria 10.CCI-P", "description": ""},
+        {"to": "FPGA Arria 10.FIU.PCIe 0 CTRL", "from": "FPGA Arria 10.CCI-P", "description": ""},
+        {"from": "FPGA Arria 10.FIU.PCIe 1 CTRL", "to": "FPGA Arria 10.CCI-P", "description": ""},
+        {"to": "FPGA Arria 10.FIU.PCIe 1 CTRL", "from": "FPGA Arria 10.CCI-P", "description": ""},
+        {"from": "FPGA Arria 10.CCI-P", "to": "FPGA Arria 10.AFU.Convolution Block", "description": ""},
+        {"to": "FPGA Arria 10.CCI-P", "from": "FPGA Arria 10.AFU.Convolution Block", "description": ""},
+        {"from": "Xeon.CNN Code.CNN CTRL Block", "to": "Xeon.CNN Code.ReLU", "description": ""},
+        {"from": "Xeon.CNN Code.CNN CTRL Block", "to": "Xeon.CNN Code.Fully Connected", "description": ""},
+        {"to": "Xeon.CNN Code.CNN CTRL Block", "from": "Xeon.CNN Code.Pooling", "description": ""},
+        {"to": "Xeon.CNN Code.CNN CTRL Block", "from": "Xeon.CNN Code.Softmax", "description": ""},
+        {"to": "Xeon.CNN Code.Pooling", "from": "Xeon.CNN Code.ReLU", "description": ""},
+        {"to": "Xeon.CNN Code.Softmax", "from": "Xeon.CNN Code.Fully Connected", "description": ""}       
+    ]
+}
